@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import ProductSerializer, UserSerializer
-from .models import Product
+from .models import Product, Rate
 
 
 class Products(APIView):
@@ -38,9 +38,12 @@ class ProductEdit(APIView):
 
     def get(self, request, id):
         product = get_object_or_404(Product, id=id)
+        rate = get_object_or_404(Rate, product__id=id)
         user = request.user
-        
-        print(user)
+        if user.IsAuthenticated():
+            if rate.user == user:
+                print(rate)
+    
         serializer = ProductSerializer(product, many=False)
         return Response(serializer.data)
 
