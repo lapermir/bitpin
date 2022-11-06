@@ -39,6 +39,7 @@ class ProductEdit(APIView):
     def get(self, request, id):
         product = get_object_or_404(Product, id=id)
         user = request.user
+        
         print(user)
         serializer = ProductSerializer(product, many=False)
         return Response(serializer.data)
