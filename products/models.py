@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db.models import Avg
 
 class Product(models.Model):
     title = models.CharField(max_length=200)
@@ -9,6 +9,6 @@ class Product(models.Model):
     def __str__(self) -> str:
         return self.title
 
-    def score_average(self):
-        # TODO
-        return self.score
+    @property
+    def average_score(self):
+        return self.score.aggregate(Avg('score'))['score_avg']
